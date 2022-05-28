@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package pb;
+
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+
+message Param {
+    string Value = 1 [(gogoproto.jsontag) = "error,omitempty"];
+}
+
+service Hello {
+    rpc SayHello (Param) returns (Param) {
+    }
+}

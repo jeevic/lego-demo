@@ -1,0 +1,78 @@
+# @see  https://github.com/toml-lang/toml
+#app配置项
+[app]
+name = "indexer"
+pidfile = "./lego_demo.pid"
+request_id = "x-request-id"
+
+[httpserver]
+http_host = "0.0.0.0"
+http_port = 8500
+enable_https = false
+middleware = ["cors", "requestid", "ydlogger", "pprof"]
+
+[grpcserver]
+grpc_host = "0.0.0.0"
+grpc_port = 8501
+interceptor = ["requestid", "log"]
+# 以下参数可以省略
+[grpcserver.keepalive]
+enforcement_policy_mintime = 5
+enforcement_policy_permit_without_stream = true
+#max_connection_idle = 120
+# ax_connection_age=30
+# max_connection_age_grace=5
+time = 60
+timeout = 10
+# [grpcserver.credentials]
+# erver_cert="./x509/server_cert.pem"
+# server_key="./x509/server_key.pem"
+
+[log]
+type = "multi"
+[log.instance.app]
+path = "./logs/"
+filename = "app.log"
+errfilename = "error.log"
+format = "ydLog"
+level = "debug"
+split = ".%Y%m%d%H"
+lifetime = 240
+rotation = 24
+[log.instance.app1]
+path = "./logs/"
+filename = "app1.log"
+errfilename = "error1.log"
+format = "ydLog"
+level = "debug"
+split = ".%Y%m%d%H"
+lifetime = 240
+rotation = 24
+[mongo]
+type = "multi"
+[mongo.instance.db1]
+hosts = "10.103.17.53:27001,10.103.17.53:27002,10.103.17.53:27003"
+replset = "image"
+max_pool_size = 100
+min_pool_size = 10
+max_idle_time = 5
+read_preference = "secondaryPreferred"
+
+
+[zookeeper]
+hosts = ["10.103.17.53:2181"]
+session_timeout = 50
+base_path = "/contech/lego-develop"
+[kafka]
+[producer]
+host = "10.103.17.53:9092"
+topic = "test"
+timeout = 5
+return_success = true
+[consumer]
+host = "10.103.17.53:9092"
+topic = "test"
+return_success = true
+
+
+
